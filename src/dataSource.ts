@@ -1,6 +1,8 @@
 import "dotenv/config"
 import { DataSource } from "typeorm"
 
+import { join } from "path"
+
 export default new DataSource({
     type: "postgres",
     host: process.env.DB_HOST as string,
@@ -8,7 +10,7 @@ export default new DataSource({
     username: process.env.DB_USER as string,
     password: process.env.DB_PASS as string,
     database: process.env.DB_NAME as string,
-    entities: ["**/*.model.*"],
+    entities: [join(__dirname, "model", "*.model.{js,ts}")],
     migrations: ["persistence/*.js"],
     ssl: true,
     extra: {
