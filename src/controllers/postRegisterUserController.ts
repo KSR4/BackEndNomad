@@ -2,6 +2,7 @@ import type { Request, Response } from "express"
 import { userService } from "../service/userService"
 import { userHelper } from "../helpers/userHelper"
 import { UserBadRequest } from "../errors/user/userBadRequest"
+import { UserAlreadyExists } from "../errors/user/userAlreadyExists"
 
 export class RegisterController {
 
@@ -16,6 +17,7 @@ export class RegisterController {
             })
         } catch(e) {
             if (e instanceof UserBadRequest) return res.status(400).send()
+            if (e instanceof UserAlreadyExists) return res.status(409).send()
 
             return res.status(500).json({
             })

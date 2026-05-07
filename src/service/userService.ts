@@ -12,6 +12,8 @@ import { EmailService } from "./emailService";
 import { logService } from "./logService";
 import { LogLevel } from "../entities/log";
 
+import { UserAlreadyExists } from "../errors/user/userAlreadyExists";
+
 export class userService {
 
     constructor(
@@ -45,6 +47,11 @@ export class userService {
     async register(username: string, email: string, password: string) {
         if (!email || !password || !username) {
             throw new UserBadRequest("Name, email and password are required");
+        }
+
+        const existingUser = await this.helper.findUserByEmail(email);
+        if (existingUser) {
+            throw new UserAlreadyExists(`The email ${email} is already registered`);
         }
 
         if (username.length < 3) throw new InvalidName(`The name ${username} length is shorter than 3`)
