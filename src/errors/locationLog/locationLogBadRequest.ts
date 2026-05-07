@@ -1,0 +1,1 @@
+export class LocationLogBadRequest extends Error {}

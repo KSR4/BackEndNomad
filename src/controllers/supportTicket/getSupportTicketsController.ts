@@ -1,0 +1,16 @@
+import { Request, Response } from "express"
+import { supportTicketService } from "../../service/supportTicketService"
+import { supportTicketHelper } from "../../helpers/supportTicketHelper"
+
+export class GetSupportTicketsController {
+    async run(req: Request, res: Response): Promise<Response> {
+        try {
+            const service = new supportTicketService(new supportTicketHelper())
+            const tickets = await service.findAll()
+
+            return res.status(200).json({ ok: true, data: tickets })
+        } catch (e) {
+            return res.status(500).send()
+        }
+    }
+}

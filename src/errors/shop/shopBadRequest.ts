@@ -1,0 +1,1 @@
+export class ShopBadRequest extends Error {}

@@ -1,0 +1,1 @@
+export class LocationLogNotFound extends Error {}

@@ -1,0 +1,38 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --config nodemon.config.json src/main.ts",
+    "build": "tsc",
+    "migrations:generate": "ts-node node_modules/typeorm/cli.js migration:generate persistence/migrations -d src/dataSource -o",
+    "migrations:run": "ts-node node_modules/typeorm/cli.js migration:run -d src/dataSource",
+    "migrations:run:fresh": "ts-node node_modules/typeorm/cli.js schema:drop -d src/dataSource && ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:run -d src/dataSource"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^8.0.3",
+    "pg": "^8.16.3",
+    "typeorm": "^0.3.27",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.10.0",
+    "@types/nodemailer": "^7.0.11",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.2"
+  }
+}

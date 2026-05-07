@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:17.5
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: gestor_pol
+      POSTGRES_PASSWORD: gestor_pol
+      POSTGRES_DB: gestor_pol
+    volumes:
+      - ./data:/var/lib/postgresql/data :Z
