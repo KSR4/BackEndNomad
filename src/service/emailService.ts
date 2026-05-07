@@ -7,12 +7,17 @@ export class EmailService {
         // Configuramos para Gmail usando variables de entorno (.env)
         this.transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
+            port: 587,
+            secure: false,
             auth: {
                 user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS 
-            }
+                pass: process.env.EMAIL_PASS
+            },
+            tls: {
+                rejectUnauthorized: false
+            },
+            connectionTimeout: 10000,
+            greetingTimeout: 10000
         });
     }
 
@@ -20,7 +25,7 @@ export class EmailService {
         const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
 
         const mailOptions = {
-            from: '"Nomad" <juanmijrmancheno2004@gmail.com>',
+            from: `"Nomad" <${process.env.EMAIL_USER}>`,
             to,
             subject: 'Recuperación de contraseña',
             html: `
@@ -44,7 +49,7 @@ export class EmailService {
         const verifyUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email?token=${token}`;
 
         const mailOptions = {
-            from: '"Nomad" <juanmijrmancheno2004@gmail.com>',
+            from: `"Nomad" <${process.env.EMAIL_USER}>`,
             to,
             subject: 'Verifica tu cuenta',
             html: `
@@ -66,7 +71,7 @@ export class EmailService {
 
     async sendPasswordResetConfirmationEmail(to: string): Promise<void> {
         const mailOptions = {
-            from: '"Nomad" <juanmijrmancheno2004@gmail.com>',
+            from: `"Nomad" <${process.env.EMAIL_USER}>`,
             to,
             subject: 'Tu contraseña ha sido cambiada',
             html: `
