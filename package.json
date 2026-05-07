@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --config nodemon.config.json src/main.ts",
     "build": "tsc",
+    "start": "node dist/main.js",
     "migrations:generate": "ts-node node_modules/typeorm/cli.js migration:generate persistence/migrations -d src/dataSource -o",
     "migrations:run": "ts-node node_modules/typeorm/cli.js migration:run -d src/dataSource",
     "migrations:run:fresh": "ts-node node_modules/typeorm/cli.js schema:drop -d src/dataSource && ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:run -d src/dataSource"
