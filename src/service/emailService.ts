@@ -24,7 +24,6 @@ export class EmailService {
                 `
             });
         } catch (error) {
-            console.error('Error enviando email:', error);
             throw new Error('No se pudo enviar el email de recuperación');
         }
     }
@@ -44,9 +43,7 @@ export class EmailService {
                     <p>Este enlace expirará en 24 horas.</p>
                 `
             });
-            console.log(`Email de verificación enviado a: ${to}`);
         } catch (error) {
-            console.error('Error enviando email de verificación:', error);
             throw new Error('No se pudo enviar el email de verificación');
         }
     }
@@ -63,9 +60,7 @@ export class EmailService {
                     <p>Si no has sido tú, por favor ponte en contacto con nosotros inmediatamente.</p>
                 `
             });
-            console.log(`Email de confirmación de cambio de contraseña enviado a: ${to}`);
         } catch (error) {
-            console.error('Error enviando email de confirmación de cambio de contraseña:', error);
         }
     }
 }
