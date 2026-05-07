@@ -5,10 +5,16 @@ import { ShopNotFound } from "../errors/shop/shopNotFound";
 import { v4 as uuidv4 } from "uuid";
 import { ShopBadRequest } from "../errors/shop/shopBadRequest";
 import { shopEventHelper } from "../helpers/shopEventHelper";
+import { logService } from "./logService";
+import { LogLevel } from "../entities/log";
 
 export class shopService {
 
-    constructor ( private readonly helper: shopHelper, private readonly sEHelper?: shopEventHelper ) {}
+    constructor ( 
+        private readonly helper: shopHelper, 
+        private readonly sEHelper?: shopEventHelper,
+        private readonly logger: logService = new logService()
+    ) {}
 
     async findShopById (id: string): Promise<Shop> {
 
@@ -38,6 +44,7 @@ export class shopService {
     
             const shop = Shop.create(uuidv4(), shopName, ownerId, latitude, longitude); 
             await this.helper.create(shop);
+            await this.logger.info(`New shop created: ${shopName}`, { shopId: shop.id, ownerId });
     }
 
     async findShopsByOwnerId(ownerId: string): Promise<Shop[]> {
@@ -91,6 +98,7 @@ export class shopService {
 
         const shopUpdated = shop.updateState(state)
         await this.helper.create(shopUpdated)
+        await this.logger.info(`Shop ${id} state updated to: ${state}`, { shopId: id, state });
         return shopUpdated
     }
 

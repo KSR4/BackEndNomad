@@ -5,15 +5,20 @@ import { json } from "body-parser"
 import { rateLimit } from "express-rate-limit"
 
 
+import { logService } from "./service/logService"
+import { LogLevel } from "./entities/log"
+
 export class Server {
     private app: Express = express()
+    private logger: logService = new logService()
 
     init(port: number) {
         this.registerMiddlewares()
         this.registerRoutes()
 
-        this.app.listen(port, () => {
+        this.app.listen(port, async () => {
             console.log(`Listening port ${port}`)
+            await this.logger.info(`Server started and listening on port ${port}`)
         })
     }
 
@@ -22,6 +27,7 @@ export class Server {
     }
 
     private registerMiddlewares() {
+        this.app.set("trust proxy", 1)
         this.app.use(cors())
         this.app.use(json())
 

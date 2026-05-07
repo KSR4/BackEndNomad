@@ -9,12 +9,15 @@ import { InvalidName } from "../errors/user/invalidName";
 import { UserNotVerified } from "../errors/user/userNotVerified";
 
 import { EmailService } from "./emailService";
+import { logService } from "./logService";
+import { LogLevel } from "../entities/log";
 
 export class userService {
 
     constructor(
         private readonly helper: userHelper,
-        private readonly emailService: EmailService = new EmailService()
+        private readonly emailService: EmailService = new EmailService(),
+        private readonly logger: logService = new logService()
     ) { }
 
     async findUserById(id: string): Promise<User> {
@@ -36,6 +39,7 @@ export class userService {
             throw new UserBadRequest("Id is required");
         }
         await this.helper.delete(id);
+        await this.logger.info(`User with id ${id} deleted`);
     }
 
     async register(username: string, email: string, password: string) {
@@ -65,6 +69,7 @@ export class userService {
         );
 
         await this.helper.register(user);
+        await this.logger.info(`New user registered: ${username} (${email})`, { userId: user.id });
         await this.emailService.sendVerificationEmail(email, verificationToken);
     }
 
@@ -79,8 +84,11 @@ export class userService {
         const user = await this.helper.login(email, hash)
 
         if (!user) {
+            await this.logger.warn(`Failed login attempt for email: ${email}`);
             throw new InvalidCredentials("Email or Password not correct")
         }
+
+        await this.logger.info(`User logged in: ${user.username}`, { userId: user.id });
 
         return user
     }

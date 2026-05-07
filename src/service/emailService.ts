@@ -6,7 +6,9 @@ export class EmailService {
     constructor() {
         // Configuramos para Gmail usando variables de entorno (.env)
         this.transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
             auth: {
                 user: process.env.EMAIL_USER || 'juanmijrmancheno2004@gmail.com',
                 pass: process.env.EMAIL_PASS || 'dpsg rnqr jvgw xskc'

@@ -11,10 +11,15 @@ import { OrderNotFound } from "../errors/order/orderNotFound";
 import { OrderBadRequest } from "../errors/order/orderBadRequest";
 import { userService } from "./userService";
 import { userHelper } from "../helpers/userHelper";
+import { logService } from "./logService";
+import { LogLevel } from "../entities/log";
 
 export class orderService {
 
-    constructor(private readonly helper: orderHelper,) { }
+    constructor(
+        private readonly helper: orderHelper,
+        private readonly logger: logService = new logService()
+    ) { }
 
     async findOrderById(id: string): Promise<Order> {
 
@@ -51,6 +56,7 @@ export class orderService {
         }
 
         await this.helper.create(order);
+        await this.logger.info(`New order created: ${id}`, { userId, foodtruckId });
 
         for (const dish of dishes) {
             const plato = await dService.findDishById(dish.dishId);
@@ -99,6 +105,7 @@ export class orderService {
         const orderUpdated = order.pickUpOrder()
 
         await this.helper.create(orderUpdated);
+        await this.logger.info(`Order picked up: ${id}`, { orderId: id });
 
         return orderUpdated;
     }
@@ -122,6 +129,7 @@ export class orderService {
         )
 
         await this.helper.create(orderUpdated);
+        await this.logger.info(`Order ${id} state updated to: ${state}`, { orderId: id, state });
 
         return orderUpdated;
     }
