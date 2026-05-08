@@ -13,7 +13,7 @@ export class PatchShopScheduleController {
             const isAdmin = res.locals.userOwner === "ADMIN"
 
             const service = new shopService(new shopHelper())
-            await service.updateSchedule(id, openDate ?? null, closeDate ?? null, userId, isAdmin)
+            await service.updateSchedule(id, openDate ? new Date(openDate) : null, closeDate ? new Date(closeDate) : null, userId, isAdmin)
 
             return res.status(200).json({
                 ok: true,

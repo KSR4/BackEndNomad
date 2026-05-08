@@ -8,12 +8,12 @@ export class PutShopController {
     async run(req: Request, res: Response): Promise<Response> {
         try {
             const id = req.params.id as string
-            const { name, state, latitude, longitude } = req.body
+            const { name, state, latitude, longitude, openDate, closeDate } = req.body
             const userId = res.locals.userId as string
             const isAdmin = res.locals.userOwner === "ADMIN"
 
             const service = new shopService(new shopHelper())
-            await service.update(id, name, state, latitude, longitude, userId, isAdmin)
+            await service.update(id, name, state, latitude, longitude, openDate ? new Date(openDate) : null, closeDate ? new Date(closeDate) : null, userId, isAdmin)
 
             return res.status(200).json({
                 ok: true,

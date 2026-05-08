@@ -51,14 +51,14 @@ export class shopService {
         return this.helper.findShopsByOwnerId(ownerId);
     }
 
-    async update(id: string, name: string, state: States, latitude: number, longitude: number, userId: string, isAdmin: boolean) {
+    async update(id: string, name: string, state: States, latitude: number, longitude: number, openDate: Date | null, closeDate: Date | null, userId: string, isAdmin: boolean) {
         const shop = await this.findShopById(id)
 
         if (shop.ownerId !== userId && !isAdmin) {
             throw new ShopBadRequest("Forbidden: You are not the owner of this shop")
         }
 
-        const shopUpdated = shop.update(name, state, latitude, longitude)
+        const shopUpdated = shop.update(name, state, latitude, longitude, openDate, closeDate)
         await this.helper.create(shopUpdated)
         return shopUpdated
     }
@@ -84,7 +84,7 @@ export class shopService {
             throw new ShopBadRequest("Forbidden: You are not the owner of this shop")
         }
 
-        const shopUpdated = shop.update(name, shop.state, shop.latitude, shop.longitude)
+        const shopUpdated = shop.update(name, shop.state, shop.latitude, shop.longitude, shop.openDate, shop.closeDate)
         await this.helper.create(shopUpdated)
         return shopUpdated
     }

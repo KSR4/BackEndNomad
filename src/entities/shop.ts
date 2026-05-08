@@ -22,6 +22,8 @@ export class Shop implements Entity {
             name: this.name,
             ownerId: this.ownerId,
             state: this.state,
+            openDate: this.openDate,
+            closeDate: this.closeDate,
             latitude: this.latitude,
             longitude: this.longitude
         }
@@ -57,14 +59,14 @@ export class Shop implements Entity {
         )
     }
 
-    update(name: string, state: States, latitude: number, longitude: number): Shop {
+    update(name: string, state: States, latitude: number, longitude: number, openDate: Date | null, closeDate: Date | null): Shop {
         return new Shop(
             this.id,
             name,
             this.ownerId,
             state,
-            this.openDate,
-            this.closeDate,
+            openDate,
+            closeDate,
             latitude,
             longitude
         )
